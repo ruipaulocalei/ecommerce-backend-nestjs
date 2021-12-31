@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    ProductsModule,
   ],
   providers: [AuthMiddleware]
 })
