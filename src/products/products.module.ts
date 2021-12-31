@@ -6,6 +6,6 @@ import { ProductsService } from './products.service';
 
 @Module({
   providers: [ProductsService, PrismaService, ProductsResolver, UsersService],
-  // imports: [UsersService]
+  imports: [ProductsService]
 })
 export class ProductsModule { }

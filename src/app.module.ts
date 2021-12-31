@@ -4,6 +4,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
+import { CartitemsModule } from './cartitems/cartitems.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ProductsModule } from './products/products.module';
     UsersModule,
     AuthModule,
     ProductsModule,
+    CartitemsModule,
   ],
   providers: [AuthMiddleware]
 })
