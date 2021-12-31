@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -15,4 +16,11 @@ import { UsersModule } from './users/users.module';
     UsersModule,
   ],
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: '/graphql',
+      method: RequestMethod.ALL
+    })
+  }
+}
