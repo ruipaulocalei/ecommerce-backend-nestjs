@@ -15,21 +15,5 @@ export class AuthGuard implements CanActivate {
       return false
     }
     return true
-    // const token = gqlContext.token
-    // if (token) {
-    //   const decoded = verify(token.toString(), 'jhghfvtygh57yghbvrdtugh76ugvhft6')
-    //   if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
-    //     const user = await this.usersService.findUserById({ id: decoded['id'] })
-    //     console.log(user.id)
-    //     if (!user) {
-    //       return false
-    //     } else {
-    //       gqlContext['user'] = user
-    //       return true
-    //     }
-    //   }
-    // } else {
-    //   return false
-    // }
   }
 }
