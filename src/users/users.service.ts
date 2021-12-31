@@ -34,6 +34,32 @@ export class UsersService {
       }
     }
   }
+  async login({ email, password }: Prisma.UserCreateInput): Promise<CreateUserOutput> {
+    try {
+      const user = await this.findUserByEmail({ email })
+      if (!user) {
+        return {
+          ok: false,
+          error: 'This user does not exist'
+        }
+      }
+      const isPasswordCorrect = compare(password, user.password)
+      if (!isPasswordCorrect) {
+        return {
+          ok: false,
+          error: 'Password is wrong'
+        }
+      }
+      return {
+        ok: true,
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'An unexpected error occured'
+      }
+    }
+  }
   async findUserByEmail({ email }: Prisma.UserWhereUniqueInput): Promise<User> {
     return await this.prisma.user.findUnique({
       where: {
