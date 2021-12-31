@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { GraphQLModule } from '@nestjs/graphql';
         return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY] }
       }
     }),
+    UsersModule,
   ],
 })
 export class AppModule { }
