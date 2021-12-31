@@ -3,6 +3,8 @@ import { Prisma, User } from 'generated/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserOutput } from './dtos/create-user.dto';
 import { compare, hash } from 'bcrypt'
+import { LoginInput, LoginOutput } from './dtos/login.dto';
+import { sign } from 'jsonwebtoken'
 
 @Injectable()
 export class UsersService {
@@ -34,7 +36,7 @@ export class UsersService {
       }
     }
   }
-  async login({ email, password }: Prisma.UserCreateInput): Promise<CreateUserOutput> {
+  async login({ email, password }: LoginInput): Promise<LoginOutput> {
     try {
       const user = await this.findUserByEmail({ email })
       if (!user) {
@@ -43,15 +45,17 @@ export class UsersService {
           error: 'This user does not exist'
         }
       }
-      const isPasswordCorrect = compare(password, user.password)
+      const isPasswordCorrect = await compare(password, user.password)
       if (!isPasswordCorrect) {
         return {
           ok: false,
           error: 'Password is wrong'
         }
       }
+      const token = sign({ id: user.id }, "hgffgcff6gf@bgfghgcgbf")
       return {
         ok: true,
+        token
       }
     } catch (error) {
       return {
