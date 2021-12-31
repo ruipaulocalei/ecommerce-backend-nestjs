@@ -6,4 +6,4 @@ import { ProductModel } from "src/models/products.model";
 export class CreateProductInput extends PickType(ProductModel, ['name', 'price', 'image', 'description']) { }
 
 @ObjectType()
-export class CreateUserOutput extends OutputDto { }
+export class CreateProductOutput extends OutputDto { }
