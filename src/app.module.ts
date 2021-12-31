@@ -8,18 +8,20 @@ import { UsersModule } from './users/users.module';
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       autoSchemaFile: true,
-      context: ({ req, connection }) => {
-        const TOKEN_KEY = 'jwt-token'
-        return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY] }
-      }
+      // context: ({ req, connection }) => {
+      //   const TOKEN_KEY = 'jwt-token'
+      //   return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY] }
+      // }
+      context: ({ req }) => ({ user: req['user'] })
     }),
     UsersModule,
   ],
+  providers: [AuthMiddleware]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes({
-      path: '/graphql',
+      path: '*',
       method: RequestMethod.ALL
     })
   }
