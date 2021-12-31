@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from 'generated/client';
+import { Prisma, User } from 'generated/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserOutput } from './dtos/create-user.dto';
 import { compare, hash } from 'bcrypt'
@@ -9,11 +9,7 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) { }
   async createAccount({ name, email, password }: Prisma.UserCreateInput): Promise<CreateUserOutput> {
     try {
-      const user = await this.prisma.user.findUnique({
-        where: {
-          email
-        }
-      })
+      const user = await this.findUserByEmail({ email })
       if (user) {
         return {
           ok: false,
@@ -37,5 +33,12 @@ export class UsersService {
         error: 'An unexpected error occured'
       }
     }
+  }
+  async findUserByEmail({ email }: Prisma.UserWhereUniqueInput): Promise<User> {
+    return await this.prisma.user.findUnique({
+      where: {
+        email
+      }
+    })
   }
 }
