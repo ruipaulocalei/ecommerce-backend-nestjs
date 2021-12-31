@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { GraphQLModule } from '@nestjs/graphql';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from './users/users.module';
       context: ({ req }) => ({ user: req['user'] })
     }),
     UsersModule,
+    AuthModule,
   ],
   providers: [AuthMiddleware]
 })
