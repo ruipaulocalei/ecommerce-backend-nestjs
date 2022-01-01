@@ -16,6 +16,7 @@ model User {
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt
     cartItem  CartItem[]
+    orders    Order[]
 }
 
 model Product {
@@ -24,9 +25,11 @@ model Product {
     price       Decimal
     image       String
     description String?
+    cartItem    CartItem[]
+    orderItem   OrderItem? @relation(fields: [orderItemId], references: [id])
+    orderItemId String?
     createdAt   DateTime   @default(now())
     updatedAt   DateTime   @updatedAt
-    cartItem    CartItem[]
 }
 
 model CartItem {
@@ -38,4 +41,23 @@ model CartItem {
     userId    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Order {
+    id        String      @id @default(uuid())
+    total     Int         @default(0)
+    items     OrderItem[]
+    user      User        @relation(fields: [userId], references: [id])
+    userId    String
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+}
+
+model OrderItem {
+    id        String    @id @default(uuid())
+    products  Product[]
+    order     Order?    @relation(fields: [orderId], references: [id])
+    orderId   String?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
 }

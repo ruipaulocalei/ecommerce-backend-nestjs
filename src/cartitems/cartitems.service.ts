@@ -70,4 +70,26 @@ export class CartitemsService {
     } catch (error) {
     }
   }
+
+  async subTotal(user: User, cartItem: CartItem): Promise<number> {
+    try {
+      const items = await this.prisma.cartItem.findMany({
+        where: {
+          userId: user.id,
+          id: cartItem.id
+        },
+        include: {
+          product: true
+        }
+      })
+      let finalTotal = 0
+      items.forEach(item => {
+        finalTotal = item.quantity * +item.product.price
+      })
+      return finalTotal
+      return 0
+    } catch (error) {
+      return 0
+    }
+  }
 }

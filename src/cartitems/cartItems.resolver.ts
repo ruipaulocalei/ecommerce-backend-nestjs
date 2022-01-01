@@ -1,9 +1,10 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { User } from "generated/client";
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
+import { CartItem, User } from "generated/client";
 import { AuthUser } from "src/auth/auth-user.decorator";
 import { AuthGuard } from "src/auth/auth.guard";
 import { CartItemModel } from "src/models/cart-items.model";
+import { UserModel } from "src/models/users.model";
 import { CartitemsService } from "./cartitems.service";
 import { CreateCartItemInput, CreateCartItemOutput } from "./dtos/create-cart-item.dto";
 
@@ -20,5 +21,10 @@ export class CartItemResolver {
   @UseGuards(AuthGuard)
   getCartItems(@AuthUser() authUser: User) {
     return this.cartItemsService.getCartItems(authUser)
+  }
+
+  @ResolveField(returns => Number)
+  subTotal(@Parent() cartItem: CartItem, @AuthUser() authUser: UserModel) {
+    return this.cartItemsService.subTotal(authUser, cartItem)
   }
 }
