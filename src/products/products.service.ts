@@ -35,6 +35,13 @@ export class ProductsService {
     }
   }
 
+  async getProduct({ id }: Prisma.ProductWhereUniqueInput): Promise<GetProductOutput> {
+    try {
+      return await this.findProductById({ id })
+    } catch (error) {
+    }
+  }
+
   async findProductById({ id }: Prisma.ProductWhereUniqueInput): Promise<GetProductOutput> {
     try {
       const product = await this.prisma.product.findUnique({
