@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from 'generated/client';
+import { Prisma, Product } from 'generated/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateProductOutput } from './dtos/create-product.dto';
 
@@ -24,6 +24,14 @@ export class ProductsService {
         ok: false,
         error: 'An unexpected error occured'
       }
+    }
+  }
+
+  async getProducts(): Promise<Product[]> {
+    try {
+      return await this.prisma.product.findMany()
+    } catch (error) {
+
     }
   }
 }
