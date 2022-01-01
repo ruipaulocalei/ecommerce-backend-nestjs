@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CartItem, User } from 'generated/client';
+import { CartItemModel } from 'src/models/cart-items.model';
 import { PrismaService } from 'src/prisma.service';
 import { CreateCartItemInput, CreateCartItemOutput } from './dtos/create-cart-item.dto';
 
@@ -71,7 +72,16 @@ export class CartitemsService {
     }
   }
 
-  async subTotal(user: User, cartItem: CartItem): Promise<number> {
+  formatMoney(amount: number) {
+    const formatter = Intl.NumberFormat('pt-AO', {
+      style: 'currency',
+      currency: 'AOA',
+      maximumFractionDigits: 2
+    })
+    return formatter.format(amount)
+  }
+
+  async itemsInCart(user: User, cartItem: CartItem) {
     try {
       const items = await this.prisma.cartItem.findMany({
         where: {
@@ -82,12 +92,38 @@ export class CartitemsService {
           product: true
         }
       })
+      return items
+    } catch (error) {
+    }
+  }
+  async subTotalFormatted(user: User, cartItem: CartItem) {
+    try {
+      const items = await this.itemsInCart(user, cartItem)
+      let finalTotal = 0
+      let subTotatlFormatted = ''
+      items.forEach(item => {
+        finalTotal = item.quantity * +item.product.price
+        subTotatlFormatted = `${item.quantity} x ${this.formatMoney(+item.product.price)} = ${this.formatMoney(finalTotal)}`
+      })
+      // console.log(`Total = ${finalTotal += finalTotal}`)
+      // finalTotal = items.reduce((newItem, product) => newItem += +product.product.price * product.quantity, 0)
+      return subTotatlFormatted
+    } catch (error) {
+      return 0
+    }
+  }
+
+  async subTotal(user: User, cartItem: CartItem): Promise<number> {
+    try {
+      const items = await this.itemsInCart(user, cartItem)
       let finalTotal = 0
       items.forEach(item => {
         finalTotal = item.quantity * +item.product.price
+        // console.log(`${item.quantity} x ${this.formatMoney(+item.product.price)} = ${this.formatMoney(finalTotal)}`);
       })
+      // console.log(`Total = ${finalTotal += finalTotal}`)
+      // finalTotal = items.reduce((newItem, product) => newItem += +product.product.price * product.quantity, 0)
       return finalTotal
-      return 0
     } catch (error) {
       return 0
     }

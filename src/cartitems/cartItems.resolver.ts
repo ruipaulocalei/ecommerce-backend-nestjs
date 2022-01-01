@@ -27,4 +27,9 @@ export class CartItemResolver {
   subTotal(@Parent() cartItem: CartItem, @AuthUser() authUser: UserModel) {
     return this.cartItemsService.subTotal(authUser, cartItem)
   }
+
+  @ResolveField(returns => String)
+  subTotalFormatted(@Parent() cartItem: CartItem, @AuthUser() authUser: UserModel) {
+    return this.cartItemsService.subTotalFormatted(authUser, cartItem)
+  }
 }
