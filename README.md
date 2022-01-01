@@ -2,4 +2,10 @@
 
 ## USER
 - [x] Create Account
-- [x] Find User By E-mail
+- [x] Login
+
+## Product
+- [x] Create Product
+
+## CartItem
+- [x] Add Product To Cart (DB)
