@@ -1,5 +1,6 @@
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { IsString, IsNumber, Length } from 'class-validator'
+import { Product } from "generated/client";
 import { ProductModel } from "./products.model";
 import { UserModel } from "./users.model";
 
@@ -12,11 +13,11 @@ export class CartItemModel {
   @IsNumber()
   quantity: number
 
-  @Field(type => [UserModel])
-  user: UserModel[]
+  @Field(type => UserModel)
+  user: UserModel
 
-  @Field(type => [ProductModel])
-  product: ProductModel[]
+  @Field(type => ProductModel)
+  product: ProductModel
 
   @Field(type => Date)
   createdAt: Date

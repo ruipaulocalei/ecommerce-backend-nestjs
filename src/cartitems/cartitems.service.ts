@@ -63,7 +63,8 @@ export class CartitemsService {
           userId: user.id
         },
         include: {
-          product: true
+          product: true,
+          user: true,
         }
       })
     } catch (error) {
