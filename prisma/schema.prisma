@@ -45,7 +45,8 @@ model CartItem {
 
 model Order {
     id        String      @id @default(uuid())
-    total     Int         @default(0)
+    total     Decimal?    @default(0)
+    charge    String?
     items     OrderItem[]
     user      User        @relation(fields: [userId], references: [id])
     userId    String
