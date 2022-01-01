@@ -12,7 +12,7 @@ export class CartItemResolver {
   constructor(private readonly cartItemsService: CartitemsService) { }
   @Mutation(() => CreateCartItemOutput)
   @UseGuards(AuthGuard)
-  createCartItem(@AuthUser() authUser: User, @Args('input') { productId }: CreateCartItemInput) {
+  addToCart(@AuthUser() authUser: User, @Args('input') { productId }: CreateCartItemInput) {
     return this.cartItemsService.createCartItem(authUser, { productId })
   }
 }

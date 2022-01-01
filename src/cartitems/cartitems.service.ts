@@ -19,7 +19,8 @@ export class CartitemsService {
         // console.log(`Already exists ${existingItemInCart.quantity} increment 1`);
         await this.prisma.cartItem.updateMany({
           where: {
-            productId: existingItemInCart.productId
+            productId: existingItemInCart.productId,
+            userId: user.id
           },
           data: {
             quantity: existingItemInCart.quantity + 1
