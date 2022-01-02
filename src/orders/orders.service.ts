@@ -29,8 +29,6 @@ export class OrdersService {
       })
       const items = userInDb.cartItem.filter(item => item.product)
       const total = items.reduce((newItem, product) => newItem += +product.product.price * product.quantity, 0)
-      // console.log(total)
-      // const prod = items
       const i = items.map(item => {
         const orderItem = {
           quantity: item.quantity,
@@ -38,7 +36,6 @@ export class OrdersService {
         }
         return orderItem
       })
-      console.log(items)
       await this.prisma.order.create({
         data: {
           total,
@@ -51,10 +48,13 @@ export class OrdersService {
         }
       })
       // const itemIds = items.map(item => item.id)
-      // await this.prisma.cartItem.deleteMany({
-      //   where: {
-      //     id: itemIds
-      // })
+      await this.prisma.cartItem.deleteMany({
+        where: {
+          user: {
+            id: userInDb.id
+          }
+        }
+      })
       return {
         ok: true
       }
