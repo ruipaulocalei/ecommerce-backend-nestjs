@@ -27,11 +27,38 @@ export class OrdersService {
           }
         }
       })
-
       const items = userInDb.cartItem.filter(item => item.product)
-      const amount = items.reduce((newItem, product) => newItem += +product.product.price * product.quantity, 0)
-      console.log(amount)
-
+      const total = items.reduce((newItem, product) => newItem += +product.product.price * product.quantity, 0)
+      console.log(total)
+      items.map(item => {
+        const orderItem = {
+          // user: { connect: { id: userInDb.id } },
+          product: { connect: { id: item.productId } },
+        }
+        console.log(orderItem)
+        return orderItem
+      })
+      await this.prisma.order.create({
+        data: {
+          total,
+          items: {
+            create: items
+          },
+          user: {
+            connect: {
+              id: userInDb.id
+            }
+          }
+        }
+      })
+      // const itemIds = items.map(item => item.id)
+      // await this.prisma.cartItem.deleteMany({
+      //   where: {
+      //     id: itemIds
+      // })
+      return {
+        ok: true
+      }
     } catch (error) {
       return {
         ok: false,

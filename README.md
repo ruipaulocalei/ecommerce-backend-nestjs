@@ -1,4 +1,5 @@
 # ECOMMERCE BACKEND NESTJS APP
+### Nestjs + Prisma ORM + GraphQL + SQLite
 
 ## USER
 - [x] Create Account
@@ -6,6 +7,15 @@
 
 ## Product
 - [x] Create Product
+- [x] Get Products
+- [x] Get Product
+- [x] Search Product By Name
 
 ## CartItem
 - [x] Add Product To Cart (DB)
+- [x] Get Cart Items
+- [x] SubTotal
+- [x] SubTotal Formatted
+
+## Order
+- [x] Create Order
