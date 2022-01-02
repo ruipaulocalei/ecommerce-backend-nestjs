@@ -1,5 +1,6 @@
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
-import { User } from "generated/client";
+import { OrderItem, User } from "generated/client";
+import { OrderItemModel } from "./order-item.model";
 import { ProductModel } from "./products.model";
 import { UserModel } from "./users.model";
 
@@ -16,8 +17,8 @@ export class OrderModel {
   @Field(type => UserModel)
   user: UserModel
 
-  // @Field(type => ProductModel)
-  // items: Order
+  @Field(type => OrderItemModel)
+  items: OrderItem
 
   @Field(type => Date)
   createdAt: Date
