@@ -32,10 +32,16 @@ export class OrdersService {
       const i = items.map(item => {
         const orderItem = {
           quantity: item.quantity,
-          products: { connect: { id: item.productId } },
+          products: { connect: { id: item.product.id } },
         }
         return orderItem
       })
+      if (i.length === 0 || total === 0) {
+        return {
+          ok: false,
+          error: 'You need have product in cart to create an order',
+        }
+      }
       await this.prisma.order.create({
         data: {
           total,
