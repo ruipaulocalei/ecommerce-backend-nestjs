@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'generated/client';
+import { Order, User } from 'generated/client';
 import { OutputDto } from 'src/common/dtos/output.dto';
+import { OrderModel } from 'src/models/orders.model';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -70,5 +71,23 @@ export class OrdersService {
         error: 'An error occured. Try again!..' + error
       }
     }
+  }
+
+  async getOrders(user: User): Promise<Order[]> {
+    let orders: Order[]
+    orders = await this.prisma.order.findMany({
+      where: {
+        userId: user.id
+      },
+      include: {
+        items: {
+          include: {
+            products: true
+          }
+        },
+        user: true
+      }
+    })
+    return orders
   }
 }

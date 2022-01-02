@@ -13,8 +13,8 @@ export class OrderItemModel {
   @Field(type => String, { nullable: true })
   charge?: string
 
-  @Field(type => ProductModel)
-  products: Product
+  @Field(type => [ProductModel])
+  products: Product[]
 
   @Field(type => OrderModel)
   order: Order

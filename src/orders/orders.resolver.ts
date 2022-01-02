@@ -1,5 +1,5 @@
 import { UseGuards } from "@nestjs/common";
-import { Mutation, Resolver } from "@nestjs/graphql";
+import { Mutation, Query, Resolver } from "@nestjs/graphql";
 import { User } from "generated/client";
 import { AuthUser } from "src/auth/auth-user.decorator";
 import { AuthGuard } from "src/auth/auth.guard";
@@ -14,5 +14,10 @@ export class OrdersResolver {
   @UseGuards(AuthGuard)
   createOrder(@AuthUser() authUser: User) {
     return this.ordersService.createOrder(authUser)
+  }
+  @Query(() => [OrderModel])
+  @UseGuards(AuthGuard)
+  getOrders(@AuthUser() authUser: User) {
+    return this.ordersService.getOrders(authUser)
   }
 }

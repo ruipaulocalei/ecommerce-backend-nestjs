@@ -1,7 +1,6 @@
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { OrderItem, User } from "generated/client";
 import { OrderItemModel } from "./order-item.model";
-import { ProductModel } from "./products.model";
 import { UserModel } from "./users.model";
 
 @InputType('OrderModelPrisma', { isAbstract: true })
@@ -15,10 +14,10 @@ export class OrderModel {
   charge?: string
 
   @Field(type => UserModel)
-  user: UserModel
+  user: User
 
-  @Field(type => OrderItemModel)
-  items: OrderItem
+  @Field(type => [OrderItemModel])
+  items: OrderItem[]
 
   @Field(type => Date)
   createdAt: Date

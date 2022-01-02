@@ -20,16 +20,15 @@ model User {
 }
 
 model Product {
-    id          String     @id @default(uuid())
+    id          String      @id @default(uuid())
     name        String
     price       Decimal
     image       String
     description String?
     cartItem    CartItem[]
-    orderItem   OrderItem? @relation(fields: [orderItemId], references: [id])
-    orderItemId String?
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
+    orderItems  OrderItem[]
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
 }
 
 model CartItem {
