@@ -29,21 +29,20 @@ export class OrdersService {
       })
       const items = userInDb.cartItem.filter(item => item.product)
       const total = items.reduce((newItem, product) => newItem += +product.product.price * product.quantity, 0)
-      console.log(total)
-      items.map(item => {
+      // console.log(total)
+      // const prod = items
+      const i = items.map(item => {
         const orderItem = {
-          // user: { connect: { id: userInDb.id } },
-          product: { connect: { id: item.productId } },
+          quantity: item.quantity,
+          products: { connect: { id: item.productId } },
         }
-        console.log(orderItem)
         return orderItem
       })
+      console.log(items)
       await this.prisma.order.create({
         data: {
           total,
-          items: {
-            create: items
-          },
+          items: { create: i },
           user: {
             connect: {
               id: userInDb.id
@@ -62,7 +61,7 @@ export class OrdersService {
     } catch (error) {
       return {
         ok: false,
-        error: 'An error occured. Try again!..'
+        error: 'An error occured. Try again!..' + error
       }
     }
   }
