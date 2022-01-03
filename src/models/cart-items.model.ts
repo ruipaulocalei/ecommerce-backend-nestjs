@@ -1,6 +1,5 @@
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
-import { IsString, IsNumber, Length } from 'class-validator'
-import { Product } from "generated/client";
+import { IsNumber } from 'class-validator'
 import { ProductModel } from "./products.model";
 import { UserModel } from "./users.model";
 
