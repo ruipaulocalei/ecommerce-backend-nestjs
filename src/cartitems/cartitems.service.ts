@@ -103,6 +103,38 @@ export class CartitemsService {
     }
   }
 
+  async deleteProductInCart(user: User, { productId: proId }: CartItemInput): Promise<CartItemOutput> {
+    try {
+      const productInCart = await this.prisma.cartItem.findFirst({
+        where: {
+          userId: user.id,
+          productId: proId
+        }
+      })
+      if (!productInCart) {
+        return {
+          ok: false,
+          error: 'This product doesn\'t exist'
+        }
+      }
+      const { productId } = productInCart
+      await this.prisma.cartItem.deleteMany({
+        where: {
+          productId: productId,
+          userId: user.id
+        },
+      })
+      return {
+        ok: true
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'An unexpected error occured'
+      }
+    }
+  }
+
   async getCartItems(user: User): Promise<CartItem[]> {
     try {
       return await this.prisma.cartItem.findMany({
