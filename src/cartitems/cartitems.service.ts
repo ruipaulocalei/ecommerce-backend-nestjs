@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CartItem, User } from 'generated/client';
-import { CartItemModel } from 'src/models/cart-items.model';
 import { PrismaService } from 'src/prisma.service';
-import { CreateCartItemInput, CreateCartItemOutput } from './dtos/create-cart-item.dto';
+import { CartItemInput, CartItemOutput } from './dtos/cart-item.dto';
 
 @Injectable()
 export class CartitemsService {
   constructor(private readonly prisma: PrismaService) { }
 
-  async createCartItem(user: User, { productId }: CreateCartItemInput): Promise<CreateCartItemOutput> {
+  async createCartItem(user: User, { productId }: CartItemInput): Promise<CartItemOutput> {
     try {
       const allCartItems = await this.prisma.cartItem.findMany({
         where: {
@@ -48,6 +47,52 @@ export class CartitemsService {
       })
       return {
         ok: true
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'An unexpected error occured'
+      }
+    }
+  }
+
+  async decrementQuantityInProductCart(user: User, { productId }: CartItemInput): Promise<CartItemOutput> {
+    try {
+      const productInCart = await this.prisma.cartItem.findFirst({
+        where: {
+          userId: user.id,
+          productId
+        }
+      })
+      if (!productInCart) {
+        return {
+          ok: false,
+          error: 'This product doesn\'t exist'
+        }
+      }
+      if (productInCart.quantity > 1) {
+        await this.prisma.cartItem.updateMany({
+          where: {
+            productId: productInCart.productId,
+            userId: user.id
+          },
+          data: {
+            quantity: productInCart.quantity - 1
+          }
+        })
+        return {
+          ok: true
+        }
+      } else {
+        await this.prisma.cartItem.deleteMany({
+          where: {
+            productId: productInCart.productId,
+            userId: user.id
+          }
+        })
+        return {
+          ok: true
+        }
       }
     } catch (error) {
       return {

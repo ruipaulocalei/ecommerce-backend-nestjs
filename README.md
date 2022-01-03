@@ -13,9 +13,13 @@
 
 ## CartItem
 - [x] Add Product To Cart (DB)
+- [x] Increment Product Quantity In Cart (DB)
+- [x] Decrement Product Quantity In Cart (DB)
 - [x] Get Cart Items
 - [x] SubTotal
 - [x] SubTotal Formatted
 
 ## Order
 - [x] Create Order
+- [x] Get Orders
+- [x] Total To Pay In Order

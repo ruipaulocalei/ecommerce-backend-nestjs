@@ -3,10 +3,10 @@ import { OutputDto } from "src/common/dtos/output.dto";
 import { CartItemModel } from "src/models/cart-items.model";
 
 @InputType()
-export class CreateCartItemInput {
+export class CartItemInput {
   @Field(type => String)
   productId: string
 }
 
 @ObjectType()
-export class CreateCartItemOutput extends OutputDto { }
+export class CartItemOutput extends OutputDto { }
