@@ -29,6 +29,12 @@ export class CartItemResolver {
     return this.cartItemsService.deleteProductInCart(authUser, { productId })
   }
 
+  @Mutation(() => CartItemOutput)
+  @UseGuards(AuthGuard)
+  deleteAllProductsInCart(@AuthUser() authUser: User) {
+    return this.cartItemsService.deleteAllProductsInCart(authUser)
+  }
+
   @Query(() => [CartItemModel])
   @UseGuards(AuthGuard)
   getCartItems(@AuthUser() authUser: User) {
