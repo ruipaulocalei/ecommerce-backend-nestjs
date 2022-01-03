@@ -15,6 +15,7 @@
 - [x] Add Product To Cart (DB)
 - [x] Increment Product Quantity In Cart (DB)
 - [x] Decrement Product Quantity In Cart (DB)
+- [x] Delete Product In Cart (DB)
 - [x] Get Cart Items
 - [x] SubTotal
 - [x] SubTotal Formatted
