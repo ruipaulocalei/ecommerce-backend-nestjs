@@ -56,12 +56,12 @@ export class CartitemsService {
     }
   }
 
-  async decrementQuantityInProductCart(user: User, { productId }: CartItemInput): Promise<CartItemOutput> {
+  async decrementQuantityInProductCart(user: User, { productId: proId }: CartItemInput): Promise<CartItemOutput> {
     try {
       const productInCart = await this.prisma.cartItem.findFirst({
         where: {
           userId: user.id,
-          productId
+          productId: proId
         }
       })
       if (!productInCart) {
@@ -70,14 +70,15 @@ export class CartitemsService {
           error: 'This product doesn\'t exist'
         }
       }
-      if (productInCart.quantity > 1) {
+      const { productId, quantity } = productInCart
+      if (quantity > 1) {
         await this.prisma.cartItem.updateMany({
           where: {
-            productId: productInCart.productId,
+            productId: productId,
             userId: user.id
           },
           data: {
-            quantity: productInCart.quantity - 1
+            quantity: quantity - 1
           }
         })
         return {
